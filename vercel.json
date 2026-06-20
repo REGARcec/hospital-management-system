@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "package.json", "use": "@vercel/next" }
-  ],
   "env": {
     "DATABASE_URL": "DATABASE_URL",
     "JWT_SECRET": "JWT_SECRET"
