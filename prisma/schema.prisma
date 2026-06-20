@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String   @unique
+  password  String
+  role      String   @default("PATIENT")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pasien {
+  id       Int          @id @default(autoincrement())
+  nama     String
+  nik      String       @unique
+  alamat   String
+  telepon  String
+  rekam    RekamMedis[]
+}
+
+model Dokter {
+  id       Int          @id @default(autoincrement())
+  nama     String
+  spesialis String
+  jadwal   String
+  rekam    RekamMedis[]
+}
+
+model Poli {
+  id      Int    @id @default(autoincrement())
+  namaPoli String
+}
+
+model Obat {
+  id        Int    @id @default(autoincrement())
+  namaObat  String
+  stok      Int
+}
+
+model Kamar {
+  id     Int    @id @default(autoincrement())
+  nomor  String
+  status String
+}
+
+model RekamMedis {
+  id        Int      @id @default(autoincrement())
+  pasien    Pasien   @relation(fields: [pasienId], references: [id])
+  pasienId  Int
+  dokter    Dokter   @relation(fields: [dokterId], references: [id])
+  dokterId  Int
+  diagnosa  String
+  resep     String
+  createdAt DateTime @default(now())
+}
