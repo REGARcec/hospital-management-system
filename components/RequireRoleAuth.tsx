@@ -20,11 +20,16 @@ export default function RequireRoleAuth({ children, roles, redirectTo = '/login'
   );
 
   useEffect(() => {
+    let cancelled = false;
+
     const check = async () => {
       try {
-        const response = await fetch('/api/auth/me');
+        const response = await fetch('/api/auth/me', {
+          credentials: 'include',
+        });
+
         if (!response.ok) {
-          router.replace(redirectTo);
+          if (!cancelled) router.replace(redirectTo);
           return;
         }
 
@@ -32,17 +37,20 @@ export default function RequireRoleAuth({ children, roles, redirectTo = '/login'
         const role = String(data?.user?.role ?? '').trim().toUpperCase();
 
         if (!role || !normalizedRoles.includes(role)) {
-          router.replace(redirectTo);
+          if (!cancelled) router.replace(redirectTo);
           return;
         }
 
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       } catch {
-        router.replace(redirectTo);
+        if (!cancelled) router.replace(redirectTo);
       }
     };
 
     check();
+    return () => {
+      cancelled = true;
+    };
   }, [normalizedRoles, redirectTo, router]);
 
   if (loading) {

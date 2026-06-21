@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function LoginForm() {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ usernameOrEmail, password }),
     });
 
     const data = await response.json();
@@ -29,18 +29,23 @@ export default function LoginForm() {
       return;
     }
 
-    router.push('/patient');
+    const role = String(data?.user?.role ?? '').toUpperCase();
+
+    if (role === 'ADMIN') router.push('/admin');
+    else if (role === 'DIRECTOR') router.push('/director');
+    else if (role === 'DOCTOR') router.push('/doctor');
+    else router.push('/patient');
   }
 
   return (
     <form onSubmit={handleLogin} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-slate-700">Email</label>
+        <label className="block text-sm font-medium text-slate-700">Username / Email</label>
         <input
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="nama@rumahsakit.com"
+          type="text"
+          value={usernameOrEmail}
+          onChange={(event) => setUsernameOrEmail(event.target.value)}
+          placeholder="admin: ADMIN_ADMIN_KECE atau user: email user@domain.com"
           className="mt-2 w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
           required
         />
