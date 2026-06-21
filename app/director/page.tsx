@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import LogoutButton from '../../components/LogoutButton';
-import RequireAuth from '../../components/RequireAuth';
+import RequireRoleAuth from '../../components/RequireRoleAuth';
+
 
 export default function DirectorDashboard() {
   return (
-    <RequireAuth>
+    <RequireRoleAuth roles={['DIRECTOR']}>
       <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(0,119,182,0.14),_transparent_45%),_#F5F7FA] px-6 py-10 text-slate-900">
+
         <div className="mx-auto max-w-6xl space-y-8">
           <div className="flex justify-end">
             <LogoutButton />
@@ -61,6 +63,7 @@ export default function DirectorDashboard() {
         </section>
       </div>
     </main>
-    </RequireAuth>
+    </RequireRoleAuth>
+
   );
 }

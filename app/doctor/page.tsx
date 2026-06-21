@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import LogoutButton from '../../components/LogoutButton';
-import RequireAuth from '../../components/RequireAuth';
+import RequireRoleAuth from '../../components/RequireRoleAuth';
+
 
 const doctorStats = [
   { label: 'Pasien Hari Ini', value: '12' },
@@ -12,8 +13,9 @@ const doctorStats = [
 
 export default function DoctorDashboard() {
   return (
-    <RequireAuth>
+    <RequireRoleAuth roles={['DOCTOR']}>
       <main className="min-h-screen bg-[#F5F7FA] px-6 py-10 text-slate-900">
+
         <div className="mx-auto max-w-6xl space-y-8">
           <div className="flex justify-end">
             <LogoutButton />
@@ -71,6 +73,7 @@ export default function DoctorDashboard() {
         </section>
       </div>
     </main>
-    </RequireAuth>
+    </RequireRoleAuth>
+
   );
 }

@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import LogoutButton from '../../components/LogoutButton';
-import RequireAuth from '../../components/RequireAuth';
+import RequireRoleAuth from '../../components/RequireRoleAuth';
+
 
 const adminItems = [
   { title: 'Pasien', description: 'Kelola data pasien lengkap dengan NIK dan alamat.', href: '/admin/pasien' },
@@ -14,8 +15,9 @@ const adminItems = [
 
 export default function AdminDashboard() {
   return (
-    <RequireAuth>
+    <RequireRoleAuth roles={['ADMIN']}>
       <main className="min-h-screen bg-[#F5F7FA] px-6 py-10 text-slate-900">
+
         <div className="mx-auto max-w-6xl">
           <div className="flex justify-end">
             <LogoutButton />
@@ -38,6 +40,7 @@ export default function AdminDashboard() {
         </section>
       </div>
     </main>
-    </RequireAuth>
+    </RequireRoleAuth>
+
   );
 }

@@ -3,7 +3,8 @@
 import AiChat from '../../components/AiChat';
 import Link from 'next/link';
 import LogoutButton from '../../components/LogoutButton';
-import RequireAuth from '../../components/RequireAuth';
+import RequireRoleAuth from '../../components/RequireRoleAuth';
+
 
 const stats = [
   { label: 'Kontrol Mendatang', value: '2 Janji' },
@@ -14,8 +15,9 @@ const stats = [
 
 export default function PatientDashboard() {
   return (
-    <RequireAuth>
+    <RequireRoleAuth roles={['PATIENT']}>
       <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(0,119,182,0.15),_transparent_46%),_#F5F7FA] px-6 py-10 text-slate-900">
+
         <div className="mx-auto max-w-7xl">
           <div className="mb-6 flex items-center justify-end">
             <LogoutButton />
@@ -74,6 +76,7 @@ export default function PatientDashboard() {
         </section>
       </div>
     </main>
-    </RequireAuth>
+    </RequireRoleAuth>
+
   );
 }
