@@ -8,8 +8,8 @@ export default function Footer() {
         </div>
         <div className="space-y-3 text-sm">
           <p className="font-semibold text-slate-900">Hubungi Kami</p>
-          <p>hello@hospitalink.id</p>
-          <p>+62 812 3456 7890</p>
+          <p>basirhamzahsiregar@gmail.com</p>
+          <p>+62 857-8829-0848</p>
         </div>
       </div>
     </footer>
