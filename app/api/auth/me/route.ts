@@ -9,13 +9,30 @@ export async function GET() {
 
   try {
     const decoded = verifyToken(token);
+    const role = String(decoded?.role || '').toUpperCase();
+
+    // Admin khusus dibuat tanpa entry user di tabel (userId = -1)
+    // Jadi /me tidak boleh selalu melakukan lookup ke Prisma.
+    if (role === 'ADMIN') {
+      return NextResponse.json({
+        user: {
+          id: -1,
+          name: 'Admin',
+          email: 'admin',
+          role: 'ADMIN',
+        },
+      });
+    }
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       select: { id: true, name: true, email: true, role: true },
     });
+
     if (!user) return unauthorizedResponse();
     return NextResponse.json({ user });
   } catch (error) {
     return unauthorizedResponse();
   }
 }
+
