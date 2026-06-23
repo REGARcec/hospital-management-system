@@ -15,10 +15,10 @@ export function verifyToken(token: string) {
 
 export function createAuthCookie(token: string) {
   // secure cookie bisa membuat cookie tidak terkirim pada environment non-HTTPS.
-  // Jadi kita hanya aktifkan secure saat benar-benar production + https.
-  // Di development (localhost http), jangan paksa secure cookie.
-  // Kalau environment tidak jelas, secure tetap dimatikan supaya cookie selalu terkirim.
-  const secure = process.env.NODE_ENV === 'production' && (process.env.NEXT_PUBLIC_APP_URL || '').startsWith('https');
+  // Aktifkan secure hanya jika kita benar-benar yakin pakai HTTPS.
+  // Di dev/localhost biasanya tidak ada https, jadi secure harus false.
+  const explicitAppUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+  const secure = process.env.NODE_ENV === 'production' && explicitAppUrl.startsWith('https');
 
 
   return serialize(COOKIE_NAME, token, {

@@ -7,10 +7,14 @@ export default function LoginPage() {
         <div className="mb-8 text-center">
           <p className="text-brand-600 font-semibold uppercase tracking-[0.25em]">Login Rumah Sakit</p>
           <h1 className="mt-4 text-4xl font-semibold text-slate-900">Akses Dashboard Rumah Sakit</h1>
-          <p className="mt-3 text-slate-600">Masuk untuk melihat jadwal kontrol, rekam medis, dan manajemen rumah sakit.</p>
+          <p className="mt-3 text-slate-600">
+            Masuk untuk melihat jadwal kontrol, rekam medis, dan manajemen rumah sakit.
+          </p>
         </div>
 
-        <LoginForm />
+        <div className="animate-in fade-in duration-700">
+          <LoginForm />
+        </div>
       </div>
     </section>
   );

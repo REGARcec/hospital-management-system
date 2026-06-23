@@ -27,16 +27,16 @@ model Pasien {
 }
 
 model Dokter {
-  id       Int          @id @default(autoincrement())
-  nama     String
-  spesialis String
-  jadwal   String
-  rekam    RekamMedis[]
+  id         Int           @id @default(autoincrement())
+  nama       String
+  spesialis  String
+  jadwal     String
+  rekam      RekamMedis[]
 }
 
 model Poli {
-  id      Int    @id @default(autoincrement())
-  namaPoli String
+  id         Int      @id @default(autoincrement())
+  namaPoli   String
 }
 
 model Obat {
@@ -61,3 +61,14 @@ model RekamMedis {
   resep     String
   createdAt DateTime @default(now())
 }
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  telepon   String
+  layanan   String
+  tanggal   String
+  catatan   String?
+  createdAt DateTime @default(now())
+}
+
