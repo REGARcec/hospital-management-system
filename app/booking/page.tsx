@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const LAYANAN_OPTIONS = [
   { value: 'RAWAT JALAN', label: 'Rawat Jalan' },
@@ -15,21 +15,9 @@ type LayananValue = (typeof LAYANAN_OPTIONS)[number]['value'];
 
 export default function BookingPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const prefillService = useMemo(() => {
-    const q = String(searchParams.get('service') || '').trim();
-    if (!q) return '';
-
-    const normalized = q.toLowerCase();
-    if (normalized.includes('rawat-jalan')) return 'RAWAT JALAN';
-    if (normalized.includes('rawat-inap')) return 'RAWAT INAP';
-    if (normalized.includes('igd')) return 'IGD';
-    if (normalized.includes('laboratorium') || normalized.includes('lab')) return 'LABORATORIUM';
-    if (normalized.includes('farmasi')) return 'FARMASI';
-
-    return q.toUpperCase();
-  }, [searchParams]);
+  // Untuk menghindari error Next export/prerender.
+  const prefillService = '';
 
   const [nama, setNama] = useState('');
   const [telepon, setTelepon] = useState('');
@@ -38,6 +26,8 @@ export default function BookingPage() {
   const [catatan, setCatatan] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  const layananOptions = useMemo(() => LAYANAN_OPTIONS, []);
 
   useEffect(() => {
     if (!prefillService) return;
@@ -77,7 +67,9 @@ export default function BookingPage() {
       <section className="mx-auto max-w-4xl">
         <div className="mb-8 rounded-[32px] border border-slate-200 bg-white/95 p-8 shadow-glass">
           <p className="text-sm uppercase tracking-[0.25em] text-brand-600">Booking Layanan</p>
-          <h1 className="mt-3 text-4xl font-semibold text-slate-950">Buat Janji dengan Rumah Sakit</h1>
+          <h1 className="mt-3 text-4xl font-semibold text-slate-950">
+            Buat Janji dengan Rumah Sakit
+          </h1>
           <p className="mt-2 max-w-2xl text-slate-600">
             Isi data berikut untuk mengajukan booking layanan. Proses tersimpan ke sistem database.
           </p>
@@ -132,7 +124,7 @@ export default function BookingPage() {
                 <option value="" disabled>
                   Pilih layanan
                 </option>
-                {LAYANAN_OPTIONS.map((opt) => (
+                {layananOptions.map((opt) => (
                   <option key={opt.value} value={opt.value}>
                     {opt.label}
                   </option>
@@ -148,6 +140,7 @@ export default function BookingPage() {
                 id="tanggal"
                 type="date"
                 value={tanggal}
+                onChange={(e) => setTanggal(e.target.value)}
                 className="mt-2 w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
                 required
               />
@@ -162,15 +155,19 @@ export default function BookingPage() {
               id="catatan"
               value={catatan}
               onChange={(e) => setCatatan(e.target.value)}
-              Kembali
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:bg-slate-300"
-            >
-              {loading ? 'Menyimpan...' : 'Kirim Booking'}
-            </button>
+              className="mt-2 w-full min-h-[120px] rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+              placeholder="Contoh: jam preferensi, keluhan, dll (opsional)"
+            />
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:bg-slate-300"
+              >
+                {loading ? 'Menyimpan...' : 'Kirim Booking'}
+              </button>
+            </div>
           </div>
 
           {message ? <p className="text-sm text-red-600">{message}</p> : null}
